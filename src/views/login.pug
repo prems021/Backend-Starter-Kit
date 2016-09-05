@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .container
+    h1 登入頁面
+    form(role='form' action='/login' method='post')
+      .form-group
+        input.form-control(type='text', name="username")
+      .form-group
+        input.form-control(type='password', name='password')
+      button.btn.btn-default(type='submit') 登入
+      a(href='/')
+        button.btn.btn-primary(type="button") 取消

@@ -1,0 +1,10 @@
+doctype html
+html
+  head
+    title Express5TS Quick Start
+    link(rel='stylesheet' href='./styles/main.css')
+  body
+    if (error && error.length > 0)
+      h4.error-msg= error
+    block content
+    script(src='./scripts/main.js')
