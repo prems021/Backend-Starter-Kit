@@ -10,10 +10,9 @@ import * as passport from 'passport';
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
 
-import * as routes from './routes';
+import { index, account } from './routes';
 
 import { Account } from './models';
-import { } from './controllers';
 
 const app = express();
 const db = mongoose.connection;
@@ -41,7 +40,8 @@ app.use(passport.session());
 app.use(require('stylus').middleware(join(__dirname, 'public')));
 app.use(express.static(join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use(index);
+app.use(account);
 
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
