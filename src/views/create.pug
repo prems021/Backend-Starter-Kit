@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  form.form-horizontal(role='form', method='post', action='/insert', enctype='multipart/form-data')
+    .form-group
+      label.control-label.col-md-3(for='name') 名稱
+      .col-md-4
+        input#name.form-control(type='text', name='name', required='')
+    .form-group
+      label.control-label.col-md-3(for='user_name') 帳號
+      .col-md-4
+        input#user_name.form-control(type='text', name='user_name', required='')
+    .form-group
+      label.control-label.col-md-3(for='password') 密碼
+      .col-md-4
+        input#password.form-control(type='password', name='password', required='')
+    .form-group
+      label.control-label.col-md-3 圖片
+      input(type='file', name='image', onchange='previewImage( this )')
+      img#img_container(style='width: 200px; height: 200px')
+    .form-group
+      a.flat-btn.flat-btn-theme(href='/') 取消
+      button.flat-btn.flat-btn-theme(type='submit') 新增
+
+  script.
+    function readImage(file) {
+        var reader = new FileReader();
+        var image  = new Image();
+        reader.readAsDataURL(file);
+        reader.onload = function(_file) {
+            image.src    = _file.target.result;
+            image.onload = function() {
+                document.getElementById( 'img_container' ).src = this.src;
+            };
+            image.onerror= function() {
+                alert('Invalid file type: '+ file.type);
+            };
+        };
+
+    }
+
+    function previewImage( obj ){
+        var F = obj.files;
+        if(F && F[0]) for(var i=0; i < F.length; i++) readImage( F[i] );
+    }

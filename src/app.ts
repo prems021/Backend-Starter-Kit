@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
+const methodOverride = require('method-override');
 
 import { route } from './routes';
 import { } from './models';
@@ -22,7 +23,10 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 
+app.use(bodyParser.urlencoded({extended : false }));
 app.use(bodyParser.json());
+
+app.use(methodOverride('_method'));
 
 app.use(require('stylus').middleware(join(__dirname, 'public')));
 app.use(express.static(join(__dirname, 'public')));

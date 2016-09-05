@@ -1,8 +1,20 @@
-doctype html
-html
-  head
-    title= title
-    link(rel='stylesheet' href='./styles/main.css')
-  body
-    h3.title= title
-    script(src='./scripts/main.js')
+extends layout
+
+block content
+  .mdl-grid
+    a.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(href='/create') 新增
+  .mdl-grid
+    table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+      thead
+        tr
+          th 名稱
+          th 帳號
+          th 操作
+      tbody
+        each user in users
+          tr
+            td= user.name
+            td= user.user_name
+            td
+              a.mdl-button.mdl-js-button.mdl-js-ripple-effect.mdl-button--colored(href=`/${user._id}/edit`) 編輯
+              a.mdl-button.mdl-js-button.mdl-js-ripple-effect.mdl-button--colored(href=`/${user._id}`) 刪除
