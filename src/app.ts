@@ -16,15 +16,11 @@ import { Account } from './models';
 import { } from './controllers';
 
 const app = express();
-
-mongoose.connect('mongodb://localhost/test');
-
 const db = mongoose.connection;
 
+mongoose.connect('mongodb://localhost/test');
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-  // ...
-});
+db.once('open', () => console.log('Connection Succeeded.'));
 
 app.set('views', join(__dirname, 'views'));
 app.set('view engine', 'pug');

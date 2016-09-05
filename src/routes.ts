@@ -9,10 +9,14 @@ router.get('/', (req: any, res: any) => {
   res.render('index', { user : req.user });
 });
 
-router.get('/register', getRegister);
-router.post('/register', postRegister);
-router.get('/login', getLogin);
-router.post('/login', authenticate('local', { failureRedirect: '/login', failureFlash: true }), postLogin);
+router.route('/register')
+  .get(getRegister)
+  .post(postRegister);
+
+router.route('/login')
+  .get(getLogin)
+  .post(authenticate('local', { failureRedirect: '/login', failureFlash: true }), postLogin);
+
 router.get('/logout', getLogout);
 
 export = router;
