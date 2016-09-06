@@ -1,40 +1,41 @@
 extends layout
 
 block content
-  form(role='form', method='post', enctype='multipart/form-data', action=`/${user._id}?_method=PUT`)
-    .form-group
-      label(for='name') 名稱
-      input#name(type='text' name='name' required value=`${user.name}`)
-    .form-group
-      label(for='user_name') 帳號
-      input#user_name(type='text', name='user_name', required='', value=`${user.user_name}`)
-    .form-group
-      label 圖片
-      input(type='hidden', name='current_image', value=`${user.image}`)
-      input(type='file', name='image', onchange='previewImage( this )')
-      img#img_container(src=`${user.image}`, style='width: 200px;height: 200px')
-    .form-group
-      a.btn.btn-default(href='/') 取消
-      button.btn.btn-primary(type='submit') 儲存
+  .mdl-grid
+    form(role='form', method='post', enctype='multipart/form-data', action=`/${user._id}?_method=PUT`)
+      .mdl-grid(style='flex-direction: column')
+        .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+          label.mdl-textfield__label(for='name') 名稱
+          input#name.mdl-textfield__input(type='text' name='name' required value=`${user.name}`)
+        .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+          label.mdl-textfield__label(for='user_name') 帳號
+          input#user_name.mdl-textfield__input(type='text', name='user_name', required='', value=`${user.user_name}`)
+        .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+          label.mdl-textfield__label 圖片
+          input(type='hidden', name='current_image', value=`${user.image}`)
+          input.mdl-textfield__input(type='file', name='image', onchange='previewImage( this )')
+          img#img_container(src=`${user.image}`, style='width: 200px;height: 200px')
+        a.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(href='/') 取消
+        button.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(type='submit') 儲存
 
   script.
-      function readImage(file) {
-          var reader = new FileReader();
-          var image  = new Image();
-          reader.readAsDataURL(file);
-          reader.onload = function(_file) {
-              image.src    = _file.target.result;
-              image.onload = function() {
-                  document.getElementById( 'img_container' ).src = this.src;
-              };
-              image.onerror= function() {
-                  alert('Invalid file type: '+ file.type);
-              };
-          };
+    function readImage(file) {
+      var reader = new FileReader();
+      var image  = new Image();
+      reader.readAsDataURL(file);
+      reader.onload = function(_file) {
+        image.src    = _file.target.result;
+        image.onload = function() {
+          document.getElementById( 'img_container' ).src = this.src;
+        };
+        image.onerror= function() {
+          alert('Invalid file type: '+ file.type);
+        };
+      };
 
-      }
+    }
 
-      function previewImage( obj ){
-          var F = obj.files;
-          if(F && F[0]) for(var i=0; i<F.length; i++) readImage( F[i] );
-      }
+    function previewImage(obj) {
+      var F = obj.files;
+      if(F && F[0]) for(var i=0; i<F.length; i++) readImage( F[i] );
+    }

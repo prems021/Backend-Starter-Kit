@@ -1,26 +1,24 @@
 extends layout
 
 block content
-  form.form-horizontal(role='form', method='post', action='/insert', enctype='multipart/form-data')
-    .form-group
-      label.control-label.col-md-3(for='name') 名稱
-      .col-md-4
-        input#name.form-control(type='text', name='name', required='')
-    .form-group
-      label.control-label.col-md-3(for='user_name') 帳號
-      .col-md-4
-        input#user_name.form-control(type='text', name='user_name', required='')
-    .form-group
-      label.control-label.col-md-3(for='password') 密碼
-      .col-md-4
-        input#password.form-control(type='password', name='password', required='')
-    .form-group
-      label.control-label.col-md-3 圖片
-      input(type='file', name='image', onchange='previewImage( this )')
-      img#img_container(style='width: 200px; height: 200px')
-    .form-group
-      a.flat-btn.flat-btn-theme(href='/') 取消
-      button.flat-btn.flat-btn-theme(type='submit') 新增
+  .mdl-grid
+    form(role='form', method='post', action='/insert', enctype='multipart/form-data')
+      .mdl-grid(style='flex-direction: column')
+        .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+          label.mdl-textfield__label(for='name') 名稱
+          input#name.mdl-textfield__input(type='text' name='name' required)
+        .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+          label.mdl-textfield__label(for='user_name') 帳號
+          input#user_name.mdl-textfield__input(type='text', name='user_name', required)
+        .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+          label.mdl-textfield__label(for='password') 密碼
+          input#password.mdl-textfield__input(type='password', name='password', required)
+        .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+          label.mdl-textfield__label 圖片
+          input.mdl-textfield__input(type='file', name='image', onchange='previewImage( this )')
+          img#img_container(style='width: auto; height: 200px')
+        a.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(href='/') 取消
+        button.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(type='submit') 新增
 
   script.
     function readImage(file) {
