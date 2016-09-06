@@ -2,23 +2,23 @@ doctype html
 html
   head
     title= title
+    link(rel='stylesheet' href='https://code.getmdl.io/1.2.0/material.indigo-pink.min.css')
     link(rel='stylesheet' href='./styles/main.css')
   body
-    .panel
-      .panel-heading
-        h3 貝寶支付
-      .panel-body
-        p#msg
-        form#paypalForm(role='form' method='post' action='/paynow')
-          .form-group
-            label(for='total') 商品價格:
-            input(type='text' name='total' value='400' required='required')
-          .form-group
-            label(for='currency') 貨幣代碼:
-            input(type='text' name='currency' value='TWD' required='required')
-          .form-group
-            label(for='description') 商品描述:
-            textarea(name='description') ng2-book
-          .form-group
-            button#sendg(type='submit') 付款
+    .mdl-grid(style='flex-direction: column')
+      h3 貝寶支付
+      form(role='form' method='post' action='/paynow')
+        .mdl-grid(style='flex-direction: column')
+          .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+            label.mdl-textfield__label(for='total') 商品價格:
+            input.mdl-textfield__input(type='text' name='total' value='400' required='required')
+          .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+            label.mdl-textfield__label(for='currency') 貨幣代碼:
+            input.mdl-textfield__input(type='text' name='currency' value='TWD' required='required')
+          .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+            label.mdl-textfield__label(for='description') 商品描述:
+            textarea.mdl-textfield__input(name='description') ng-book 2
+        .mdl-grid
+          button.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(type='submit') 付款
+    script(defer src='https://code.getmdl.io/1.2.0/material.min.js')
     script(src='./scripts/main.js')
