@@ -4,5 +4,21 @@ html
     title= title
     link(rel='stylesheet' href='./styles/main.css')
   body
-    h3.title= title
+    .panel
+      .panel-heading
+        h3 貝寶支付
+      .panel-body
+        p#msg
+        form#paypalForm(role='form' method='post' action='/paynow')
+          .form-group
+            label(for='total') 商品價格:
+            input(type='text' name='total' value='400' required='required')
+          .form-group
+            label(for='currency') 貨幣代碼:
+            input(type='text' name='currency' value='TWD' required='required')
+          .form-group
+            label(for='description') 商品描述:
+            textarea(name='description') ng2-book
+          .form-group
+            button#sendg(type='submit') 付款
     script(src='./scripts/main.js')
