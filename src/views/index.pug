@@ -4,5 +4,8 @@ html
     title= title
     link(rel='stylesheet' href='./styles/main.css')
   body
-    h3.title= title
+    p Learning Angular 2
+    form(action='/pay' method='POST' id='paypalForm')
+      a(href='#' onclick="document.getElementById('paypalForm').submit();")
+        img(src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-medium.png' alt='Check out with PayPal')
     script(src='./scripts/main.js')

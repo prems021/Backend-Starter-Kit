@@ -19,11 +19,13 @@ gulp.task('nodemon', (done: any) => {
 	})
   .on('start', () => {
 		if (!started) {
-			started = true;
       done();
+			started = true;
 		}
 	})
   .on('restart', () => {
-    setTimeout(() => browserSync.reload(), 1000);
+    setTimeout(() => {
+      browserSync.reload()
+    }, 1000);
   });
 });
