@@ -6,12 +6,21 @@ const mongoose = require('mongoose');
 import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 
+const Paypal = require('paypal-adaptive');
+
 import { route } from './routes';
 import { } from './models';
 import { } from './controllers';
 
 const app = express();
 const db = mongoose.connection;
+
+const paypalSdk = new Paypal({
+  userId: 'shyamchen1994-facilitator-1_api1.gmail.com',
+  password: 'XKRPSZ8YQFEGBWGN',
+  signature: 'Am1RXnnyBcaD5yWEulWLUoTt4.1OAJD-jr.5wtljym9sbi6zyAzaPat-',
+  sandbox: true
+});
 
 mongoose.connect('mongodb://localhost/test');
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -29,6 +38,43 @@ app.use(require('stylus').middleware(join(__dirname, 'public')));
 app.use(express.static(join(__dirname, 'public')));
 
 app.use(route);
+
+app.post('/pay', (req: any, res: any) => {
+  let payload: any = {
+    requestEnvelope: {
+      errorLanguage:  'en_US'
+    },
+    actionType: 'PAY',
+    currencyCode: req.body.currency,
+    returnUrl: 'http://localhost:3000/success',
+    cancelUrl: 'http://localhost:3000/cancel',
+    feesPayer: 'SENDER',
+    receiverList: {
+      receiver: [{
+        email: 'shyamchen1994-facilitator@gmail.com',
+        amount: req.body.total * 0.9
+      }, {
+        email: 'shyamchen1994-facilitator-1@gmail.com',
+        amount: req.body.total * 0.1
+      }]
+    }
+  };
+  paypalSdk.pay(payload, (err: any, paypalRes: any) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    res.redirect(paypalRes.paymentApprovalUrl);
+  });
+});
+
+app.get('/success', (req: any, res: any) => {
+  res.send('交易完成');
+});
+
+app.get('/cancel', (req: any, res: any) => {
+  res.send('交易取消');
+});
 
 app.use((req: any, res: any) => {
   res.status(404);
