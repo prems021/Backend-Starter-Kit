@@ -4,5 +4,15 @@ html
     title= title
     link(rel='stylesheet' href='./styles/main.css')
   body
-    h3.title= title
+    p= title
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js')
     script(src='./scripts/main.js')
+    script.
+      const socket = io.connect('http://localhost:3000');
+      socket.on('connect', () => {
+        console.log('接收連結');
+      });
+      socket.on('伺服器', (message) => {
+        console.log(message);
+      });
+      socket.emit('瀏覽器', '瀏覽器的訊息');

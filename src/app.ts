@@ -39,3 +39,13 @@ const server = app.listen(3001, 'localhost', () => {
   const { address, port } = server.address();
   console.log(`Listening on http://localhost:${port}`);
 });
+
+var io = require('socket.io');
+var socket = io.listen(server);
+socket.on('connection', (client: any) => {
+  console.log('建立連結');
+  client.on('瀏覽器', (message: any) => {
+    console.log(message);
+    socket.emit('伺服器', '伺服器的訊息');
+  });
+});
