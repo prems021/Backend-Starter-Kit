@@ -43,67 +43,69 @@ const config: any = {
 
 paypal.configure(config.api);
 
-app.get('/success', (req: any, res: any) => {
-  res.send('交易完成');
-});
-
-app.get('/cancel', (req: any, res: any) => {
-  res.send('交易取消');
-});
-
-
-/*
- * 其他
- * create_with_credit_card
- * create_with_saved_credit_card
- */
-app.post('/paynow', (req: any, res: any) => {
-  // create_with_paypal
-  let payment: any = {
-    "intent": "sale",  // sale, order
+app.post('/pay', (req: any, res: any) => {
+  // 建立使用 paypal 付款
+  let paymentPaypal: any = {
+    "intent": "sale",  // 銷售
     "payer": {
-      "payment_method": "paypal"  // paypal, credit_card
+      "payment_method": "paypal"  // paypal 付款
     },
     "redirect_urls": {
       "return_url": "http://localhost:3000/success",
       "cancel_url": "http://localhost:3000/cancel"
     },
     "transactions": [{
-      // "item_list": {
-      //   "items": [{
-      //     "name": req.body.name,
-      //     "sku": req.body.sku,
-      //     "price": req.body.price,
-      //     "currency": req.body.currency,
-      //     "quantity": req.body.quantity
-      //   }]
-      // },
       "amount": {
-        "total": parseInt(req.body.total),
+        "total": req.body.total,
         "currency":  req.body.currency
       },
       "description": req.body.description
     }]
   };
 
-  paypal.payment.create(payment, (error: any, payment: any) => {
+  paypal.payment.create(paymentPaypal, (error: any, paymentRes: any) => {
     if (error) {
-      console.log(error);
+      throw error;
     } else {
-      if(payment.payer.payment_method === 'paypal') {
-        console.log(payment);
-        req.paymentId = payment.id;
+      if(paymentRes.payer.payment_method === 'paypal') {
+        console.log(paymentRes);
+        req.paymentId = paymentRes.id;
         let redirectUrl: string;
-        for(let i = 0; i < payment.links.length; i++) {
-          let link = payment.links[i];
+        for(let i = 0; i < paymentRes.links.length; i++) {
+          let link = paymentRes.links[i];
+          // rel: 'approval_url'
           if (link.method === 'REDIRECT') {
             redirectUrl = link.href;
+            res.redirect(redirectUrl);
           }
         }
-        res.redirect(redirectUrl);
       }
     }
   });
+});
+
+app.get('/success', (req: any, res: any) => {
+
+  const payer = { payer_id: req.query.PayerID };
+  paypal.payment.execute(req.query.paymentId, payer, (error: any, paymentRes: any) => {
+    if (error) {
+      throw error;
+    } else {
+      console.log('取得付款回應');
+      // console.log(paymentRes);
+      res.render('success', {
+        state: paymentRes.state,
+        description: paymentRes.transactions[0].description,
+        amount: parseInt(paymentRes.transactions[0].amount.total),
+        create_time: paymentRes.create_time
+      });
+
+    }
+  });
+});
+
+app.get('/cancel', (req: any, res: any) => {
+  res.send('付款建立取消');
 });
 
 app.use((req: any, res: any) => {

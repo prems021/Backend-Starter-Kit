@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  .mdl-grid
+    p 建立付款成功
+  .mdl-grid
+    table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+      thead
+        tr
+          th 狀態
+          th 描述
+          th 價格
+          th 建立時間
+      tbody
+          tr
+            th= state
+            th= description
+            th NT$#{amount}
+            th= create_time
+  .mdl-grid
+    a.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(href='/') 回首頁
