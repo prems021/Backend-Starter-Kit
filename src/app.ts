@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
-const uuid = require('node-uuid');
 
 const PayPal = require('paypal-express-checkout');
 
@@ -49,21 +48,18 @@ let paypal = PayPal.init(
 
 app.post('/pay', (req: any, res: any) => {
   // invoiceNumber, amount, description, currency, requireAddress, callback
-  paypal.pay(false, 400, 'Learning Angular 2', 'TWD', true, (err: any, url: any) => {
-    if (err) {
-        console.log(err);
-        return;
-    }
+  paypal.pay(Math.floor((Math.random() * 9000000000) + 1000000000), 400, 'Angular 2 Design Patterns and Best Practices', 'TWD', true, (err: any, url: any) => {
+    if (err) { throw err; }
     res.redirect(url);
   });
 });
 
-app.get('/cancel', (req: any, res: any) => {
-	res.send('交易取消');
+app.get('/success', (req: any, res: any) => {
+  res.send('Success');
 });
 
-app.get('/success', (req: any, res: any) => {
-  res.send('交易完成');
+app.get('/cancel', (req: any, res: any) => {
+	res.send('Cancel');
 });
 
 app.use((req: any, res: any) => {

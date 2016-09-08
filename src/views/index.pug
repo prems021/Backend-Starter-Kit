@@ -2,10 +2,15 @@ doctype html
 html
   head
     title= title
+    link(rel='stylesheet' href='https://code.getmdl.io/1.2.0/material.indigo-pink.min.css')
     link(rel='stylesheet' href='./styles/main.css')
   body
-    p Learning Angular 2
-    form(action='/pay' method='POST' id='paypalForm')
-      a(href='#' onclick="document.getElementById('paypalForm').submit();")
-        img(src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-medium.png' alt='Check out with PayPal')
+    .mdl-grid
+      form(action='/pay' method='post' id='paypalForm')
+        .mdl-grid(style='flex-direction: column')
+          p Angular 2 Design Patterns and Best Practices
+          img(alt='Angular 2 Design Patterns and Best Practices' src='https://www.packtpub.com/sites/default/files/B05767_MockupCover_Normal.jpg' style='width: 17.5rem; margin-bottom: 1rem')
+          a(href='#' onclick="document.getElementById('paypalForm').submit();")
+            img(src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-medium.png' alt='Check out with PayPal')
+    script(defer src='https://code.getmdl.io/1.2.0/material.min.js')
     script(src='./scripts/main.js')
