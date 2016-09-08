@@ -51,29 +51,26 @@ app.post('/pay', (req: any, res: any) => {
     feesPayer: 'SENDER',
     receiverList: {
       receiver: [{
-        email: 'shyamchen1994-facilitator@gmail.com',
-        amount: req.body.total * 0.9
-      }, {
         email: 'shyamchen1994-facilitator-1@gmail.com',
         amount: req.body.total * 0.1
+      }, {
+        email: 'shyamchen1994-facilitator@gmail.com',
+        amount: req.body.total * 0.9
       }]
     }
   };
   paypalSdk.pay(payload, (err: any, paypalRes: any) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
+    if (err) { throw err; }
     res.redirect(paypalRes.paymentApprovalUrl);
   });
 });
 
 app.get('/success', (req: any, res: any) => {
-  res.send('交易完成');
+  res.send('Success');
 });
 
 app.get('/cancel', (req: any, res: any) => {
-  res.send('交易取消');
+  res.send('Cancel');
 });
 
 app.use((req: any, res: any) => {

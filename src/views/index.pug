@@ -5,17 +5,16 @@ html
     link(rel='stylesheet' href='https://code.getmdl.io/1.2.0/material.indigo-pink.min.css')
     link(rel='stylesheet' href='./styles/main.css')
   body
-    .mdl-grid(style='flex-direction: column')
-      h3 貝寶支付
+    .mdl-grid
       form(method='post' action='/pay')
         .mdl-grid(style='flex-direction: column')
+          img(alt='Angular 2 Blueprints' src='https://www.packtpub.com/sites/default/files/B05080_MockupCover_Normal.jpg' style='width: 17.5rem; margin: 0 auto 1rem auto')
           .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
             label.mdl-textfield__label(for='total') 商品價格:
-            input.mdl-textfield__input(type='text' name='total' value='400' required='required')
+            input.mdl-textfield__input(type='text' name='total' value='400' readonly)
           .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
             label.mdl-textfield__label(for='currency') 貨幣代碼:
-            input.mdl-textfield__input(type='text' name='currency' value='TWD' required='required')
-        .mdl-grid
-          button.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(type='submit') 付款
+            input.mdl-textfield__input(type='text' name='currency' value='TWD' readonly)
+          button.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(type='submit') 購買
     script(defer src='https://code.getmdl.io/1.2.0/material.min.js')
     script(src='./scripts/main.js')
