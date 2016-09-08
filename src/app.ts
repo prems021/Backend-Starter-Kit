@@ -32,16 +32,12 @@ app.use(express.static(join(__dirname, 'public')));
 
 app.use(route);
 
-const config: any = {
-  "port" : 3000,
-  "api" : {
-    "mode" : "sandbox",
-    "client_id" : "AW7PzIc4hmQ8X9KjTJ1xQHCScIP8yJxwZ2Z0tOPOG8WMZeAWWsxTGanTlPh56ceVfVyvfX20SRa5pr88",
-    "client_secret" : "EOQF2A8mvTpqfDt3O8t3Aizr1jGnFKVWaSkeGWmt8D5-JHJ6ycuNoEZue9ZI5DqenizAOS_HxVgaq8LF"
-  }
-};
-
-paypal.configure(config.api);
+// PayPal 組態
+paypal.configure({
+  "mode" : "sandbox",
+  "client_id" : "AW7PzIc4hmQ8X9KjTJ1xQHCScIP8yJxwZ2Z0tOPOG8WMZeAWWsxTGanTlPh56ceVfVyvfX20SRa5pr88",
+  "client_secret" : "EOQF2A8mvTpqfDt3O8t3Aizr1jGnFKVWaSkeGWmt8D5-JHJ6ycuNoEZue9ZI5DqenizAOS_HxVgaq8LF"
+});
 
 app.post('/pay', (req: any, res: any) => {
   // 建立使用 paypal 付款
@@ -56,18 +52,17 @@ app.post('/pay', (req: any, res: any) => {
     },
     "transactions": [{
       "amount": {
-        "total": req.body.total,
-        "currency":  req.body.currency
+        "total": req.body.total,  // 後續商品從模型抓取
+        "currency":  req.body.currency  // 後續商品從模型抓取
       },
-      "description": req.body.description
+      "description": req.body.description  // 後續商品從模型抓取
     }]
   };
 
   paypal.payment.create(paymentPaypal, (error: any, paymentRes: any) => {
-    if (error) {
-      throw error;
-    } else {
-      if(paymentRes.payer.payment_method === 'paypal') {
+    if (error) { throw error; } else {
+      // 如果付款方式是 paypal 才執行 (另一種付款方式是 credit_card)
+      if (paymentRes.payer.payment_method === 'paypal') {
         console.log(paymentRes);
         req.paymentId = paymentRes.id;
         let redirectUrl: string;
@@ -85,21 +80,16 @@ app.post('/pay', (req: any, res: any) => {
 });
 
 app.get('/success', (req: any, res: any) => {
-
   const payer = { payer_id: req.query.PayerID };
   paypal.payment.execute(req.query.paymentId, payer, (error: any, paymentRes: any) => {
-    if (error) {
-      throw error;
-    } else {
-      console.log('取得付款回應');
-      // console.log(paymentRes);
+    if (error) { throw error; } else {
+      console.log(paymentRes);
       res.render('success', {
         state: paymentRes.state,
         description: paymentRes.transactions[0].description,
         amount: parseInt(paymentRes.transactions[0].amount.total),
         create_time: paymentRes.create_time
       });
-
     }
   });
 });
