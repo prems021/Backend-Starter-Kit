@@ -6,6 +6,9 @@ const mongoose = require('mongoose');
 import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 
+const passport = require('passport');
+const Strategy = require('passport-twitter').Strategy;
+
 import { route } from './routes';
 
 const app = express();
@@ -26,7 +29,49 @@ app.use(logger('dev'));
 app.use(require('stylus').middleware(join(__dirname, 'public')));
 app.use(express.static(join(__dirname, 'public')));
 
+app.use(require('cookie-parser')());
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(route);
+
+passport
+  .use(new Strategy({
+    consumerKey: process.env.CONSUMER_KEY,
+    consumerSecret: process.env.CONSUMER_SECRET,
+    callbackURL: 'http://localhost:3000//login/twitter/return'
+  },
+  (token: any, tokenSecret: any, profile: any, cb: any) => {
+    return cb(null, profile);
+  }));
+
+passport.serializeUser((user: any, cb: any) => {
+  cb(null, user);
+});
+
+passport.deserializeUser((obj: any, cb: any) => {
+  cb(null, obj);
+});
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.get('/login/twitter', passport.authenticate('twitter'));
+
+app.get('/login/twitter/return',
+  passport.authenticate('twitter', { failureRedirect: '/login' }),
+  (req: any, res: any) => {
+    res.redirect('/');
+  });
+
+app.get('/profile',
+  require('connect-ensure-login').ensureLoggedIn(),
+  (req: any, res: any) => {
+    // res.render('profile', { user: req.user });
+  });
 
 app.use((req: any, res: any) => {
   res.status(404);
