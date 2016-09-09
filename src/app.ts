@@ -21,10 +21,10 @@ db.once('open', () => console.log('Connection Succeeded.'));
 app.set('views', join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
-
 app.use(bodyParser.urlencoded({extended : false }));
 app.use(bodyParser.json());
+
+app.use(logger('dev'));
 
 app.use(methodOverride('_method'));
 
