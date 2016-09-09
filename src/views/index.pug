@@ -2,9 +2,12 @@ extends layout
 
 block content
   .mdl-grid
-    form.mdl-cell.mdl-cell--3-col(role='form' method='post' action='/pay')
+    form.mdl-cell.mdl-cell--2-col(method='post' action='/pay')
       .mdl-grid(style='flex-direction: column')
-        img(alt='Angular 2 Blueprints' src='https://www.packtpub.com/sites/default/files/B05080_MockupCover_Normal.jpg' style='width: 17.5rem; margin: 0 auto 1rem auto')
+        img(alt='Angular 2 Blueprints' src='https://www.packtpub.com/sites/default/files/B05080_MockupCover_Normal.jpg' style='width: 12rem; margin: 0 auto 1rem auto')
+        .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+          label.mdl-textfield__label(for='commodity') 商品名稱:
+          input.mdl-textfield__input(type='text' name='commodity' value='Angular 2 Blueprints' readonly)
         .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
           label.mdl-textfield__label(for='total') 商品價格:
           input.mdl-textfield__input(type='text' name='total' value='400' readonly)
@@ -12,6 +15,8 @@ block content
           label.mdl-textfield__label(for='currency') 貨幣代碼:
           input.mdl-textfield__input(type='text' name='currency' value='TWD' readonly)
         .mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
-          label.mdl-textfield__label(for='description') 商品描述:
-          input.mdl-textfield__input(type='text' name='description' value='Angular 2 Blueprints' readonly)
+          label.mdl-textfield__label(for='description') 交易描述:
+          input.mdl-textfield__input(type='text' name='description' value='Buy Angular 2 Blueprints' readonly)
         button.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(type='submit') 購買
+  .mdl-grid
+    a.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--colored(href='/transactions') 交易訂單

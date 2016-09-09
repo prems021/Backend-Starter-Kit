@@ -9,13 +9,13 @@ import * as logger from 'morgan';
 const paypal = require('paypal-rest-sdk');
 
 import { route } from './routes';
-import { } from './models';
+import { Account } from './models';
 import { } from './controllers';
 
 const app = express();
 const db = mongoose.connection;
 
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/paypal-rest-api');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => console.log('Connection Succeeded.'));
 
@@ -41,7 +41,7 @@ paypal.configure({
 
 app.post('/pay', (req: any, res: any) => {
   // 建立使用 paypal 付款
-  let paymentPaypal: any = {
+  const paymentPaypal: any = {
     "intent": "sale",  // 銷售
     "payer": {
       "payment_method": "paypal"  // paypal 付款
@@ -81,21 +81,32 @@ app.post('/pay', (req: any, res: any) => {
 
 app.get('/success', (req: any, res: any) => {
   const payer = { payer_id: req.query.PayerID };
-  paypal.payment.execute(req.query.paymentId, payer, (error: any, paymentRes: any) => {
-    if (error) { throw error; } else {
+  paypal.payment.execute(req.query.paymentId, payer, (err: any, paymentRes: any) => {
+    if (err) { throw err; } else {
       console.log(paymentRes);
-      res.render('success', {
+      const account: any = {
         state: paymentRes.state,
         description: paymentRes.transactions[0].description,
         amount: parseInt(paymentRes.transactions[0].amount.total),
         create_time: paymentRes.create_time
+      };
+      Account.create(account, (err: any, accounts: any) => {
+        if (err) throw err;
+        res.render('success', account);
       });
     }
   });
 });
 
 app.get('/cancel', (req: any, res: any) => {
-  res.send('付款建立取消');
+  res.send('取消');
+});
+
+app.get('/transactions', (req: any, res: any) => {
+  Account.find({ }, (err: any, accounts: any) => {
+    if (err) throw err;
+    res.render('transactions', { accounts: accounts });
+  });
 });
 
 app.use((req: any, res: any) => {
