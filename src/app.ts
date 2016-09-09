@@ -6,8 +6,11 @@ const mongoose = require('mongoose');
 import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
 import { route } from './routes';
-import { } from './models';
+import { User } from './models';
 import { } from './controllers';
 
 const app = express();
@@ -29,6 +32,19 @@ app.use(require('stylus').middleware(join(__dirname, 'public')));
 app.use(express.static(join(__dirname, 'public')));
 
 app.use(route);
+
+passport
+  .use(new GoogleStrategy({
+    clientID: 'GOOGLE_CLIENT_ID',
+    clientSecret: 'GOOGLE_CLIENT_SECRET',
+    callbackURL: 'http://www.example.com/auth/google/callback'
+  },
+  (accessToken: any, refreshToken: any, profile: any, cb: any) => {
+    User.findOrCreate({ googleId: profile.id }, (err: any, user: any) => {
+      return cb(err, user);
+    });
+  }
+));
 
 app.use((req: any, res: any) => {
   res.status(404);
