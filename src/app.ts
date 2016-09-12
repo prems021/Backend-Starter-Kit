@@ -61,6 +61,7 @@ app.post('/pay', (req: any, res: any) => {
   };
   paypalSdk.pay(payload, (err: any, paypalRes: any) => {
     if (err) { throw err; }
+    console.log(paypalRes);
     res.redirect(paypalRes.paymentApprovalUrl);
   });
 });
