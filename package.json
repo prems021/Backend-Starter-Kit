@@ -15,17 +15,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Shyam-Chen/Backend-Starter-Kit.git"
+    "url": "git+https://github.com/prems021/Backend-Starter-Kit.git"
   },
   "keywords": [
     "Node.js"
   ],
-  "author": "Yen-cheng Chen, 陳彥澄",
+  "author": "premji",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Shyam-Chen/Backend-Starter-Kit/issues"
+    "url": "https://github.com/prems021/Backend-Starter-Kit/issues"
   },
-  "homepage": "https://github.com/Shyam-Chen/Backend-Starter-Kit#readme",
+  "homepage": "https://github.com/prems021/Backend-Starter-Kit#readme",
   "dependencies": {
     "babel-cli": "6.23.0",
     "babel-plugin-transform-function-bind": "6.22.0",
